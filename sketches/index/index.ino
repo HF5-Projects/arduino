@@ -12,17 +12,11 @@
  #define debug Serial
 #define DHTPIN 2
 
-// #elif defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_SAM)
-// #define debug SerialUSB
-// #else
-// #define debug Serial
-// #endif
-
 const byte pinAdc = A0;
 int maxNoise = 700;
 
-String startClock = "08:00:00";
-String endClock = "18:00:00";
+// String startClock = "08:00:00";
+// String endClock = "18:00:00";
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -33,17 +27,16 @@ void setup() {
   // Wire.begin();
   // dht.begin();
   // // tempHum();
-  String settings = getSettings();
-
-  DynamicJsonDocument doc(400);
-  deserializeJson(doc, settings);
-  String sd = doc[0]["value"];
-  Serial.println(sd);
+  String cooldown = getSetting("1");
+  cooldown.remove(0,1);
+  cooldown.remove(cooldown.length() - 1, 1);
+  Serial.println(cooldown);
+  Serial.println("xzxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxavc");
 
   int timeGet = 3600 * 1000;
   int timeTempHum = 900 * 1000;
 
-  MsTimer2::set(timeGet, getSettings);
+  MsTimer2::set(timeGet, getSetting);
   MsTimer2::set(timeTempHum, tempHum);
   MsTimer2::start();
 }
