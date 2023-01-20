@@ -11,9 +11,10 @@ EthernetClient client;
 void postSetup(String endPoint, String data) {
   //Tests the ethernet connection
   if (Ethernet.begin(mac) == 0) {
-    while (true);
+    while (true)
+      ;
   }
-  
+
   Serial.begin(9600);
   String body = "{\"message\":\"" + data + "\"}";
   if (client.connect(serverName, 80)) {  //starts client connection, checks for connection
@@ -21,6 +22,8 @@ void postSetup(String endPoint, String data) {
     client.println(token);
     client.println(String(F("Host: 192.168.1.10")));
     client.println(String(F("Content-Type: application/json")));
+    client.print(String(F("Content-Length: ")));
+    client.println(body.length());    
     client.println();
     client.println(body);
     client.println();
