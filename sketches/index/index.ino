@@ -22,11 +22,11 @@ DHT dht(DHTPIN, DHTTYPE);
 
 
 void setup() {
-  // Serial.begin(9600);
-  // debug.begin(9600);
-  // Wire.begin();
-  // dht.begin();
-  // // tempHum();
+  Serial.begin(9600);
+  debug.begin(9600);
+  Wire.begin();
+  dht.begin();
+  // tempHum();
   String cooldown = getSetting("1");
   cooldown.remove(0,1);
   cooldown.remove(cooldown.length() - 1, 1);
