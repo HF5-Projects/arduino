@@ -2,7 +2,7 @@
 #include <Ethernet.h>
 #include "secrets.h"
 
-byte mac[] = { 0xA8, 0x61, 0x0A, 0xAE, 0xAB, 0x95 };  // Physical mac address.
+byte mac[] = { 0xA8, 0x61, 0x0A, 0xAE, 0x94, 0x83 };  // Physical mac address.
 
 char serverName[] = "192.168.1.10";  // The raspberry pi server.
 EthernetClient client;
