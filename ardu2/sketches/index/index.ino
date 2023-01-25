@@ -9,13 +9,13 @@
 
 char serverRoom_open = "08:00:00";   // Default serveroom opening time.
 char serverRoom_close = "18:00:00";  // Default servertoom closing time.
-int noise_tooHigh_alert = 700;       // Default setting for too noisy.
+int noise_tooHigh_alert = 300;       // Default setting for too noisy.
 const int pinAdc = A0;               // Sound sensor port.
 
 void setup() {
   Serial.begin(9600);
   updateSettings();
-  MsTimer2::set(3600000, updateSettings);  // Timer looks for updates in settings every hour.
+  MsTimer2::set(4000, updateSettings);  // Timer looks for updates in settings every hour.
   MsTimer2::start();
 }
 
@@ -33,6 +33,7 @@ void updateSettings() {  // This function runs a get call from get.ino to our ap
     deserializeJson(doc, cooldown);
     const char* test = doc[F("value")];
     int number = atol(test);
+    Serial.println(test);
 
     if (options[i] == "6") {
       serverRoom_open = test;
@@ -50,11 +51,11 @@ void sound() {  // This function reads the sound sensor and checks if the sound 
   long sum = 0;
   for (int i = 0; i < 32; i++) { sum += analogRead(pinAdc); }
   sum >>= 5;
-  Serial.println(sum);
   delay(100);
 
   if (sum > noise_tooHigh_alert) {
     Serial.println(String(sum));
+    Serial.println("");
     postSetup(F("2"), String(sum));
     delay(10000);
   }

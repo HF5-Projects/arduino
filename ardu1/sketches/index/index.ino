@@ -11,16 +11,13 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
   dht.begin();
-  updateSettings();  // Updates settings on startup.
-  tempHum();         // Updates settings on startup.
-
-  MsTimer2::set(3600000, updateSettings);             // Timer looks for updates in settings every hour.
-  MsTimer2::set(tempHumid_cooldown * 1000, tempHum);  // Timer activates the temp/humid sensor when at the chosen time.
-  MsTimer2::start();
 }
 
-void loop() {}
+void loop() {
+  tempHum();
+}
 
 void updateSettings() {  // This function runs a get call from get.ino to our api and retuns a json. The json is then deserialized and the values are added to the settings.
   String cooldown = getSetting("1");
@@ -28,13 +25,18 @@ void updateSettings() {  // This function runs a get call from get.ino to our ap
   cooldown.remove(cooldown.length() - 1, 1);
   StaticJsonDocument<256> doc;
   deserializeJson(doc, cooldown);
+  Serial.println(cooldown);
   tempHumid_cooldown = atol(doc[F("value")]);
 }
 
 void tempHum() {  // This function reads the temperature and humidity from the temp/humid sensor and sends a post from post.ino to our api.
+  updateSettings();
   float temp_hum_val[2] = { 0 };
   if (!dht.readTempAndHumidity(temp_hum_val)) {
-    postSetup(F("3"), String(temp_hum_val[0]));
-    postSetup(F("1"), String(temp_hum_val[1]));
+    if (temp_hum_val[0] > 0) {
+      postSetup(F("3"), String(temp_hum_val[0]));
+      postSetup(F("1"), String(temp_hum_val[1]));
+    }
   }
+  delay(tempHumid_cooldown * 1000); // The cooldown from the settings are applied here.
 }

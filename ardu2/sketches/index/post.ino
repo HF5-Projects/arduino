@@ -35,8 +35,8 @@ void postSetup(String endPoint, String data) {
 
   while (client.connected() && !client.available()) delay(1);  // Waits for data.
   while (client.connected() || client.available()) {           // Connected or data available.
-    char c = client.read();                                    // Gets char from ethernet buffer.
-    Serial.print(c);                                           // Prints char to serial monitor
+    char c = client.read();                                    // Gets char from ethernet buffer.                                         // Prints char to serial monitor
   }
+  Serial.print("posted");  
   client.stop();  // Stop client.
 }
