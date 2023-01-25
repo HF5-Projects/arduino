@@ -2,7 +2,7 @@
 #include <Ethernet.h>
 #include "secrets.h"
 
-byte mac[] = { 0xA8, 0x61, 0x0A, 0xAE, 0xAB, 0x95 };  // Physical mac address.
+byte mac[] = { 0xA8, 0x61, 0x0A, 0xAE, 0x94, 0x83 };  // Physical mac address.
 
 char serverName[] = "192.168.1.10";  // The raspberry pi server.
 EthernetClient client;
@@ -36,7 +36,7 @@ void postSetup(String endPoint, String data) {
   while (client.connected() && !client.available()) delay(1);  // Waits for data.
   while (client.connected() || client.available()) {           // Connected or data available.
     char c = client.read();                                    // Gets char from ethernet buffer.
-    Serial.print(c);                                           // Prints char to serial monitor
   }
-  client.stop();  // Stop client.
+  Serial.println("posted");  // Prints char to serial monitor
+  client.stop();             // Stop client.
 }
