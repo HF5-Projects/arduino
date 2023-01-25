@@ -15,7 +15,7 @@ const int pinAdc = A0;               // Sound sensor port.
 void setup() {
   Serial.begin(9600);
   updateSettings();
-  MsTimer2::set(4000, updateSettings);  // Timer looks for updates in settings every hour.
+  MsTimer2::set(60*1000, updateSettings);  // Timer looks for updates in settings every hour.
   MsTimer2::start();
 }
 
